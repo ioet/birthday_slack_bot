@@ -3,6 +3,8 @@ from collections import OrderedDict
 from itertools import repeat
 from random import choice, choices
 from src.utils import dateutils
+from src.integrations.bamboo import BambooIntegration
+from src.config import EnvManager
 
 
 class BirthdayMessageController:
@@ -11,7 +13,7 @@ class BirthdayMessageController:
     gif_search_limit: int = 8
 
     @staticmethod
-    def choose_template(templates: tuple):
+    def choose_template(templates: List[str]):
         return choice(templates)
 
     @staticmethod
@@ -19,9 +21,10 @@ class BirthdayMessageController:
         return template.format(username)
 
     @classmethod
-    def get_best_matching_template_keyword(cls, template: str) -> str:
+    def get_best_matching_template_keyword(cls, template: str) -> List[str]:
         characters_to_ignore = '.!?'
-        searchable_template = [word.strip(characters_to_ignore) for word in (template.replace('\n', ' ').strip(characters_to_ignore).split(' '))]
+        template = template.replace('\n', ' ').strip(characters_to_ignore).split(' ')
+        searchable_template = [word.strip(characters_to_ignore) for word in template]
         keyword_count = OrderedDict(zip(cls.gif_keywords, repeat(0, len(cls.gif_keywords))))
         total_count = 0
         for word in searchable_template:
@@ -31,19 +34,18 @@ class BirthdayMessageController:
         return choices(list(keyword_count.keys()), weights=[count/total_count for count in keyword_count.values()])
 
     @staticmethod
-    def get_birthday_employees(users: List[dict]):
-        def is_birthday(birthday: str, current_day_month: tuple):
+    def get_birthday_employees(users: List[dict]) -> List[str]:
+        def is_birthday(birthday: str):
             delimiter = '-'
+            current_day_month = dateutils.get_current_day_month(EnvManager.UTC_HOUR_OFFSET)
             birthday_day_month: tuple = tuple(int(value) for value in reversed(birthday.split(delimiter)))
-            return True if birthday_day_month == current_day_month else False
+            return birthday_day_month == current_day_month
 
-        current_day_month = dateutils.get_current_day_month()
-        # We might need to store the slack username in bamboo
-        return [user.get('firstName') for user in users if is_birthday(user.get('birthday'), current_day_month)]
+        return [user.get(BambooIntegration.employee_identifier_field) for user in users if is_birthday(user.get(BambooIntegration.employee_birthday_field))]
 
     @classmethod
     def send(cls, hr_integration, slack_integration, gif_integration, templates: Tuple[str]):
-        birthday_employees = cls.get_birthday_employees(hr_integration.get_employees())
+        birthday_employees = cls.get_birthday_employees(hr_integration.get_employees_with_birthday())
         templates_copy = list(templates)
         for employee in birthday_employees:
             template = cls.choose_template(templates_copy)
