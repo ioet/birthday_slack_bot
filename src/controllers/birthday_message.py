@@ -19,8 +19,9 @@ class BirthdayMessageController:
         return template.format(username)
 
     @classmethod
-    def get_best_matchig_template_keyword(cls, template: str) -> str:
-        searchable_template = template.replace('\n', ' ').strip('.!?').split(' ')
+    def get_best_matching_template_keyword(cls, template: str) -> str:
+        characters_to_ignore = '.!?'
+        searchable_template = [word.strip(characters_to_ignore) for word in (template.replace('\n', ' ').strip(characters_to_ignore).split(' '))]
         keyword_count = OrderedDict(zip(cls.gif_keywords, repeat(0, len(cls.gif_keywords))))
         total_count = 0
         for word in searchable_template:
@@ -31,13 +32,14 @@ class BirthdayMessageController:
 
     @staticmethod
     def get_birthday_employees(users: List[dict]):
-
         def is_birthday(birthday: str, current_day_month: tuple):
-            return True
+            delimiter = '-'
+            birthday_day_month: tuple = tuple(int(value) for value in reversed(birthday.split(delimiter)))
+            return True if birthday_day_month == current_day_month else False
 
-        current_day_month = dateutils.get_current_day_month('-5')
+        current_day_month = dateutils.get_current_day_month()
         # We might need to store the slack username in bamboo
-        return [user.get('slackUsername') for user in users if is_birthday(user.get('birthday'), current_day_month)]
+        return [user.get('firstName') for user in users if is_birthday(user.get('birthday'), current_day_month)]
 
     @classmethod
     def send(cls, hr_integration, slack_integration, gif_integration, templates: Tuple[str]):
@@ -49,6 +51,6 @@ class BirthdayMessageController:
                 templates_copy.remove(template)
 
             message = cls.fill_from_template(employee, template)
-            best_matching_keyword = cls.get_best_matchig_template_keyword(message)
+            best_matching_keyword = cls.get_best_matching_template_keyword(message)
             selected_gif = gif_integration.get_random_gif(best_matching_keyword, cls.gif_search_limit)
             slack_integration.send_message(message, selected_gif.get('url'), selected_gif.get('description'))
