@@ -13,5 +13,5 @@ class RestClient:
     def get(self, additional_url: str = '', query_params: Optional[dict] = None) -> requests.Response:
         return requests.get(f'{self.base_url}/{additional_url}', params=query_params or {}, headers=self.headers, auth=self.basic_auth)
 
-    def post(self, additional_url: str = '', payload: Optional[dict] = None) -> requests.Response:
-        return requests.post(f'{self.base_url}/{additional_url}', json=payload, headers=self.headers, auth=self.basic_auth)
+    def post(self, additional_url: str = '',  payload: Optional[dict] = None, query_params: Optional[dict] = None,) -> requests.Response:
+        return requests.post(f'{self.base_url}/{additional_url}', params=query_params or {}, json=payload, headers=self.headers, auth=self.basic_auth)
