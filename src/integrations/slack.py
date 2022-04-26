@@ -27,9 +27,9 @@ class SlackIntegration:
             if response.status_code != 200:
                 return
 
-            response = response.json()
-            employees += response.get('members', [])
-            next_cursor = response.get('response_metadata', {}).get('next_cursor', '')
+            slack_userlist = response.json()
+            employees.extend(slack_userlist.get('members', []))
+            next_cursor = slack_userlist.get('response_metadata', {}).get('next_cursor')
             exists_employees = bool(next_cursor)
             query_params['cursor'] = next_cursor
 
@@ -52,4 +52,3 @@ class SlackIntegration:
     @classmethod
     def get_members_id_by_email(cls, members_email: List[str]) -> List[str]:
         return [cls.get_member_by_email(email).get('id') for email in members_email]
-
