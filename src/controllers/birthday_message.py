@@ -44,15 +44,16 @@ class BirthdayMessageController:
         return [user.get(BambooIntegration.employee_identifier_field) for user in users if is_birthday(user.get(BambooIntegration.employee_birthday_field))]
 
     @classmethod
-    def send(cls, hr_integration, slack_integration, gif_integration, templates: Tuple[str]):
-        birthday_employees = cls.get_birthday_employees(hr_integration.get_employees_with_birthday())
+    def send(cls, hr_integration, slack_integration, slack_message_integration, gif_integration, templates: Tuple[str]):
+        birthday_employees_email = cls.get_birthday_employees(hr_integration.get_employees_with_birthday())
+        birthday_employees_ids = slack_integration.get_members_id_by_email(birthday_employees_email)
         templates_copy = list(templates)
-        for employee in birthday_employees:
+        for employee_id in birthday_employees_ids:
             template = cls.choose_template(templates_copy)
             if len(templates_copy) > 1:
                 templates_copy.remove(template)
 
-            message = cls.fill_from_template(employee, template)
+            message = cls.fill_from_template(f'<@{employee_id}>', template)
             best_matching_keyword = cls.get_best_matching_template_keyword(message)
             selected_gif = gif_integration.get_random_gif(best_matching_keyword, cls.gif_search_limit)
-            slack_integration.send_message(message, selected_gif.get('url'), selected_gif.get('description'))
+            slack_message_integration.send_message(message, selected_gif.get('url'), selected_gif.get('description'))
