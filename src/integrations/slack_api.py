@@ -4,7 +4,7 @@ from src.clients import RestClient
 from src.config import EnvManager
 
 
-class SlackIntegration:
+class SlackApiIntegration:
     api_token = EnvManager.SLACK_BOT_USER_AUTH_TOKEN
     limit = 190
     client = RestClient(
@@ -15,25 +15,24 @@ class SlackIntegration:
 
     @classmethod
     def get_members(cls):
-        employees = []
-        exists_employees = True
+        members = []
+        exists_members = True
         query_params = {
             'limit': cls.limit
         }
 
-        while exists_employees:
+        while exists_members:
             response = cls.client.get('users.list', query_params=query_params)
+            members_list = response.json()
 
-            if response.status_code != 200:
-                return
+            cls.raise_exception_for_error(members_list, cls.get_members.__name__)
 
-            slack_userlist = response.json()
-            employees.extend(slack_userlist.get('members', []))
-            next_cursor = slack_userlist.get('response_metadata', {}).get('next_cursor')
-            exists_employees = bool(next_cursor)
+            members.extend(members_list.get('members', []))
+            next_cursor = members_list.get('response_metadata', {}).get('next_cursor')
+            exists_members = bool(next_cursor)
             query_params['cursor'] = next_cursor
 
-        return employees
+        return members
 
     @classmethod
     def get_member_by_email(cls, email):
@@ -42,13 +41,18 @@ class SlackIntegration:
         }
 
         response = cls.client.get('users.lookupByEmail', query_params=query_params)
+        member = response.json()
 
-        if response.status_code != 200:
-            return
+        cls.raise_exception_for_error(member, cls.get_member_by_email.__name__)
 
-        member = response.json().get('user')
-        return member
+        return member.get('user')
 
     @classmethod
     def get_members_id_by_email(cls, members_email: List[str]) -> List[str]:
         return [cls.get_member_by_email(email).get('id') for email in members_email]
+
+    @staticmethod
+    def raise_exception_for_error(response: dict, function_name: str):
+        if not response.get('ok'):
+            error = response.get('error')
+            raise Exception(f'Could not retrieve information on {function_name}, due the following error: {error}')
