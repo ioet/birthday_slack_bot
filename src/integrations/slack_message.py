@@ -1,10 +1,10 @@
-from ..clients.rest import RestClient
-from ..config import EnvManager
+from src.clients import RestClient
+from src.config import EnvManager
 
 
-class SlackIntegration:
-    client = RestClient('https://hooks.slack.com/services/')
+class SlackMessageIntegration:
     webhook_url: str = EnvManager.SLACK_WEBHOOK_URL_SECRET
+    client = RestClient('https://hooks.slack.com/services/')
 
     @classmethod
     def send_message(cls, text_message: str, image_url: str, image_alt_text: str = ''):
