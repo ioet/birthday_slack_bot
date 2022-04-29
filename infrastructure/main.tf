@@ -39,7 +39,7 @@ module "lambda_function_container_image" {
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = "ioet-birthday-bot"
-  description   = "Birthday-bot wishes each day at 8:30 AM"
+  description   = "Birthday-bot sends wishes each day at 9:00 AM"
 
   create_package = false
 
@@ -59,8 +59,8 @@ module "lambda_function_container_image" {
 
 resource "aws_cloudwatch_event_rule" "schedule" {
   name                = "every-day"
-  description         = "Trigger every day at 8:30 AM"
-  schedule_expression = "cron(30 8 * * ? *)"
+  description         = "Trigger every day at 9:00 AM"
+  schedule_expression = "cron(0 9 * * ? *)"
 }
 
 
