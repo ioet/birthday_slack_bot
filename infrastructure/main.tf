@@ -59,8 +59,8 @@ module "lambda_function_container_image" {
 
 resource "aws_cloudwatch_event_rule" "schedule" {
   name                = "every-day"
-  description         = "Trigger every day at 9:00 AM"
-  schedule_expression = "cron(0 9 * * ? *)"
+  description         = "Trigger event every day at 9:00AM GMT-5"
+  schedule_expression = "cron(0 14 * * ? *)"
 }
 
 
