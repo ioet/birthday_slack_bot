@@ -8,7 +8,7 @@ from src.config import EnvManager
 
 class BirthdayMessageController:
 
-    gif_keywords: frozenset = frozenset(('birthday', 'party'))
+    gif_keywords: frozenset = frozenset(('birthday', 'party', 'cumpleaños'))
     gif_search_limit: int = 8
 
     @staticmethod
