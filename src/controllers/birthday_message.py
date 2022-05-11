@@ -1,36 +1,13 @@
 from typing import List, Tuple
-from collections import OrderedDict
-from itertools import repeat
-from random import choice, choices
-from src.utils import dateutils
+
+from src.controllers.base import BaseController
 from src.config import EnvManager
+from src.utils import dateutils
 
 
-class BirthdayMessageController:
+class BirthdayMessageController(BaseController):
 
     gif_keywords: frozenset = frozenset(('birthday', 'party', 'cumpleaños'))
-    gif_search_limit: int = 8
-
-    @staticmethod
-    def choose_template(templates: List[str]):
-        return choice(templates)
-
-    @staticmethod
-    def fill_from_template(username: str, template: str) -> str:
-        return template.format(username)
-
-    @classmethod
-    def get_best_matching_template_keyword(cls, template: str) -> List[str]:
-        characters_to_ignore = '.!?'
-        template = template.replace('\n', ' ').strip(characters_to_ignore).split(' ')
-        searchable_template = [word.strip(characters_to_ignore) for word in template]
-        keyword_count = OrderedDict(zip(cls.gif_keywords, repeat(0, len(cls.gif_keywords))))
-        total_count = 0
-        for word in searchable_template:
-            if (lower_word := word.lower()) in keyword_count:
-                keyword_count[lower_word] += 1
-                total_count += 1
-        return choices(list(keyword_count.keys()), weights=[count/total_count for count in keyword_count.values()])
 
     @staticmethod
     def get_birthday_employees(employees: List[dict], birthday_field) -> List[dict]:
