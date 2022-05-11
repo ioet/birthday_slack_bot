@@ -8,7 +8,6 @@ from src.utils import dateutils
 class AnniversaryMessageController(BaseController):
 
     gif_keywords: frozenset = frozenset(('work', 'party'))
-    gif_search_limit: int = 8
 
     @staticmethod
     def fill_from_template(username: str, anniversary_years: str, template: str) -> str:
