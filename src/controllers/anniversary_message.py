@@ -42,12 +42,3 @@ class AnniversaryMessageController(BaseController):
             best_matching_keyword = cls.get_best_matching_template_keyword(message)
             selected_gif = gif_integration.get_random_gif(best_matching_keyword, cls.gif_search_limit)
             slack_message_integration.send_message(message, selected_gif.get('url'), selected_gif.get('description'))
-
-
-            
-
-
-
-
-
-
