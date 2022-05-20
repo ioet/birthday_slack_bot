@@ -17,7 +17,7 @@ BIRTHDAY_WISH_TEMPLATES = (
 )
 
 ANNIVERSARY_WISH_TEMPLATES = (
-    'Hey {username}, what a pleasure to have your great work during these {anniversary_years} year(s) in :ioet:.\n We hope that this time will increase more :blob-party:',
+    'What a pleasure to have your great work during {anniversary_years} year(s) in :ioet:.\nWe hope this time keeps growing! :blob-party:\n !Happy work anniversary {username} :rainbow-party:!',
     'Has it really been {anniversary_years} year(s) since you started here?\nI guess time flies when you’re having fun. Thanks for your hard work, :ioet: is happy to have you. !Happy work anniversary {username}!',
     'IOET is celebrating {anniversary_years} years since {username} arrived!\nThank you for everything you do around the office, your work is amazing. You are a special friend and colleague here. :dance-party:',
 )

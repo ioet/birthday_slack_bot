@@ -51,6 +51,10 @@ class SlackApiIntegration:
     def get_members_id_by_email(cls, members_email: List[str]) -> List[str]:
         return [cls.get_member_by_email(email).get('id') for email in members_email]
 
+    @classmethod
+    def get_member_id_by_email(cls, member_email: str) -> str:
+        return cls.get_member_by_email(member_email).get('id')
+
     @staticmethod
     def raise_exception_for_error(response: dict, function_name: str):
         if not response.get('ok'):

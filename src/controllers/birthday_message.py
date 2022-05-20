@@ -1,7 +1,6 @@
 from typing import List, Tuple
 
 from src.controllers.base import BaseController
-from src.config import EnvManager
 from src.utils import dateutils
 
 
@@ -11,15 +10,7 @@ class BirthdayMessageController(BaseController):
 
     @staticmethod
     def get_birthday_employees(employees: List[dict], birthday_field) -> List[dict]:
-        def is_birthday(birthday: str):
-            if not birthday:
-                return False
-            delimiter = '-'
-            current_day_month = dateutils.get_current_day_month(EnvManager.UTC_HOUR_OFFSET)
-            birthday_day_month: tuple = tuple(int(value) for value in reversed(birthday.split(delimiter)))
-            return birthday_day_month == current_day_month
-
-        return [employee for employee in employees if is_birthday(employee.get(birthday_field))]
+        return [employee for employee in employees if dateutils.is_current_date(employee.get(birthday_field), '%m-%d')]
 
     @classmethod
     def send(cls, hr_integration, slack_api_integration, slack_message_integration, gif_integration, templates: Tuple[str]):

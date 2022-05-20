@@ -15,22 +15,14 @@ class AnniversaryMessageController(BaseController):
 
     @staticmethod
     def get_anniversary_employees(employees: List[dict], anniversary_field) -> List[dict]:
-        def is_anniversary(anniversary: str):
-            if not anniversary:
-                return False
-            delimiter = '-'
-            current_day_month: tuple = dateutils.get_current_day_month(EnvManager.UTC_HOUR_OFFSET)
-            anniversary_day, anniversary_month, _ = tuple(int(value) for value in reversed(anniversary.split(delimiter)))
-            return current_day_month == (anniversary_day, anniversary_month)
-
-        return [employee for employee in employees if is_anniversary(employee.get(anniversary_field))]
+        return [employee for employee in employees if dateutils.is_current_date(employee.get(anniversary_field))]
 
     @classmethod
     def send(cls, hr_integration, slack_api_integration, slack_message_integration, gif_integration, templates: Tuple[str]):
         anniversary_employees = cls.get_anniversary_employees(hr_integration.get_employees_with_anniversary(), hr_integration.employee_hire_field)
         templates_copy = list(templates)
         for employee in anniversary_employees:
-            employee_id = slack_api_integration.get_member_by_email(employee.get(hr_integration.employee_email_field))
+            employee_id = slack_api_integration.get_member_id_by_email(employee.get(hr_integration.employee_email_field))
             employee_hire_date = employee.get(hr_integration.employee_hire_field)
             employee_years_anniversary = dateutils.get_years_difference_from_current_date(EnvManager.UTC_HOUR_OFFSET, employee_hire_date)
             template = cls.choose_template(templates_copy)

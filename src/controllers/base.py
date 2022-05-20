@@ -5,6 +5,7 @@ from itertools import repeat
 
 
 class BaseController:
+
     gif_keywords: frozenset = frozenset()
     gif_search_limit: int = 15
 
@@ -27,4 +28,8 @@ class BaseController:
             if (lower_word := word.lower()) in keyword_count:
                 keyword_count[lower_word] += 1
                 total_count += 1
+
+        if total_count == 0:
+            return choice(list(keyword_count.keys()))
+
         return choices(list(keyword_count.keys()), weights=[count / total_count for count in keyword_count.values()])
