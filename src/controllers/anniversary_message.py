@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 from src.controllers.base import BaseController
 from src.config import EnvManager
-from src.utils import dateutils
+from src.utils import date_utils
 
 
 class AnniversaryMessageController(BaseController):
@@ -15,7 +15,7 @@ class AnniversaryMessageController(BaseController):
 
     @staticmethod
     def get_anniversary_employees(employees: List[dict], anniversary_field) -> List[dict]:
-        return [employee for employee in employees if dateutils.is_current_date(employee.get(anniversary_field))]
+        return [employee for employee in employees if date_utils.is_current_date(employee.get(anniversary_field))]
 
     @classmethod
     def send(cls, hr_integration, slack_api_integration, slack_message_integration, gif_integration, templates: Tuple[str]):
@@ -24,7 +24,7 @@ class AnniversaryMessageController(BaseController):
         for employee in anniversary_employees:
             employee_id = slack_api_integration.get_member_id_by_email(employee.get(hr_integration.employee_email_field))
             employee_hire_date = employee.get(hr_integration.employee_hire_field)
-            employee_years_anniversary = dateutils.get_years_difference_from_current_date(EnvManager.UTC_HOUR_OFFSET, employee_hire_date)
+            employee_years_anniversary = date_utils.get_years_difference_from_current_date(EnvManager.UTC_HOUR_OFFSET, employee_hire_date)
             template = cls.choose_template(templates_copy)
             if len(templates_copy) > 1:
                 templates_copy.remove(template)

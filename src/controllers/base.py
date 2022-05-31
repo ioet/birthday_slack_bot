@@ -10,7 +10,7 @@ class BaseController:
     gif_search_limit: int = 15
 
     @staticmethod
-    def choose_template(templates: List[str]):
+    def choose_template(templates: List[str]) -> str:
         return choice(templates)
 
     @staticmethod

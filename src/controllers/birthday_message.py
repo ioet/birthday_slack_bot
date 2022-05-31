@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 from src.controllers.base import BaseController
-from src.utils import dateutils
+from src.utils import date_utils
 
 
 class BirthdayMessageController(BaseController):
@@ -10,7 +10,7 @@ class BirthdayMessageController(BaseController):
 
     @staticmethod
     def get_birthday_employees(employees: List[dict], birthday_field) -> List[dict]:
-        return [employee for employee in employees if dateutils.is_current_date(employee.get(birthday_field), '%m-%d')]
+        return [employee for employee in employees if date_utils.is_current_date(employee.get(birthday_field), '%m-%d')]
 
     @classmethod
     def send(cls, hr_integration, slack_api_integration, slack_message_integration, gif_integration, templates: Tuple[str]):
