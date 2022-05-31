@@ -4,7 +4,8 @@ from src.integrations.slack_api import SlackApiIntegration
 from src.integrations.slack_message import SlackMessageIntegration
 from src.integrations.tenor_gif import TenorGifIntegration
 from src.controllers.birthday_message import BirthdayMessageController
-from src.data.wishes import BIRTHDAY_WISH_TEMPLATES
+from src.controllers.anniversary_message import AnniversaryMessageController
+from src.data.wishes import BIRTHDAY_WISH_TEMPLATES, ANNIVERSARY_WISH_TEMPLATES
 
 
 def handler(event, context):
@@ -14,6 +15,14 @@ def handler(event, context):
         SlackMessageIntegration,
         TenorGifIntegration,
         BIRTHDAY_WISH_TEMPLATES
+    )
+
+    AnniversaryMessageController.send(
+        BambooIntegration,
+        SlackApiIntegration,
+        SlackMessageIntegration,
+        TenorGifIntegration,
+        ANNIVERSARY_WISH_TEMPLATES
     )
 
     return {

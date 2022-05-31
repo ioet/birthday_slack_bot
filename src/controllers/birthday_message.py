@@ -1,48 +1,16 @@
 from typing import List, Tuple
-from collections import OrderedDict
-from itertools import repeat
-from random import choice, choices
-from src.utils import dateutils
-from src.config import EnvManager
+
+from src.controllers.base import BaseController
+from src.utils import date_utils
 
 
-class BirthdayMessageController:
+class BirthdayMessageController(BaseController):
 
     gif_keywords: frozenset = frozenset(('birthday', 'party', 'cumpleaños'))
-    gif_search_limit: int = 8
-
-    @staticmethod
-    def choose_template(templates: List[str]):
-        return choice(templates)
-
-    @staticmethod
-    def fill_from_template(username: str, template: str) -> str:
-        return template.format(username)
-
-    @classmethod
-    def get_best_matching_template_keyword(cls, template: str) -> List[str]:
-        characters_to_ignore = '.!?'
-        template = template.replace('\n', ' ').strip(characters_to_ignore).split(' ')
-        searchable_template = [word.strip(characters_to_ignore) for word in template]
-        keyword_count = OrderedDict(zip(cls.gif_keywords, repeat(0, len(cls.gif_keywords))))
-        total_count = 0
-        for word in searchable_template:
-            if (lower_word := word.lower()) in keyword_count:
-                keyword_count[lower_word] += 1
-                total_count += 1
-        return choices(list(keyword_count.keys()), weights=[count/total_count for count in keyword_count.values()])
 
     @staticmethod
     def get_birthday_employees(employees: List[dict], birthday_field) -> List[dict]:
-        def is_birthday(birthday: str):
-            if not birthday:
-                return False
-            delimiter = '-'
-            current_day_month = dateutils.get_current_day_month(EnvManager.UTC_HOUR_OFFSET)
-            birthday_day_month: tuple = tuple(int(value) for value in reversed(birthday.split(delimiter)))
-            return birthday_day_month == current_day_month
-
-        return [employee for employee in employees if is_birthday(employee.get(birthday_field))]
+        return [employee for employee in employees if date_utils.is_current_date(employee.get(birthday_field), '%m-%d')]
 
     @classmethod
     def send(cls, hr_integration, slack_api_integration, slack_message_integration, gif_integration, templates: Tuple[str]):
