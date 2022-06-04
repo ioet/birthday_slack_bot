@@ -20,6 +20,22 @@ def get_years_difference_from_current_date(utc_hour_offset: str, date: str, date
 def is_current_date(date: str, date_format: str = '%Y-%m-%d') -> bool:
     if not date:
         return False
+
+    if not is_valid_format_date(date, date_format):
+        return False
+
     current_day_month = get_current_day_month(EnvManager.UTC_HOUR_OFFSET)
     date = datetime.strptime(date, date_format)
     return current_day_month == (date.day, date.month)
+
+
+def is_valid_format_date(date: str, date_format: str) -> bool:
+    if not date:
+        return False
+
+    try:
+        datetime.strptime(date, date_format)
+    except ValueError:
+        return False
+
+    return True
