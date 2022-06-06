@@ -1,6 +1,9 @@
+import logging
 from datetime import datetime, timedelta
 from src.config import EnvManager
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def get_day_month(date: datetime) -> tuple:
     return date.day, date.month
@@ -25,6 +28,7 @@ def is_current_date(date: str, date_format: str = '%Y-%m-%d') -> bool:
         current_day_month = get_current_day_month(EnvManager.UTC_HOUR_OFFSET)
         date = datetime.strptime(date, date_format)
     except ValueError:
-        raise Exception('Date has an invalid format')
+       logger.warning('Date has an invalid format')
+       return False
 
     return current_day_month == (date.day, date.month)
