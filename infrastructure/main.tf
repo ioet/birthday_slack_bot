@@ -40,6 +40,7 @@ module "lambda_function_container_image" {
 
   function_name = "ioet-birthday-bot"
   description   = "Birthday-bot sends wishes each day at 9:00 AM"
+  maximum_retry_attempts = 0
 
   create_package = false
 
