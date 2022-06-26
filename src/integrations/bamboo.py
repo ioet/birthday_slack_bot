@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from src.clients import RestClient
 from src.config import EnvManager
@@ -49,3 +49,15 @@ class BambooIntegration:
     @classmethod
     def get_employees_email(cls, employees: List[dict]):
         return [employee.get(cls.employee_email_field) for employee in employees]
+
+    @classmethod
+    def get_holidays(cls, start: Optional[str] = None, end: Optional[str] = None) -> List[dict]:
+        params = {}
+        if start:
+            params.update({'start': start})
+        if end:
+            params.update({'end': end})
+
+        response = cls.client.get('time_off/whos_out/', query_params=params, custom_headers={'Accept': 'application/json'})
+
+        return [time_off for time_off in response.json() if time_off.get('type', '').lower() == 'holiday']
