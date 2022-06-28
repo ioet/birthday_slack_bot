@@ -21,6 +21,11 @@ def get_years_difference_from_current_date(utc_hour_offset: str, date: str, date
     return current_date.year - date.year
 
 
+def get_date_plus_interval(days: int, utc_hour_offset: str, date_format='%Y-%m-%d'):
+    current_date = datetime.utcnow() + timedelta(hours=int(utc_hour_offset)) + timedelta(days=days)
+    return current_date.strftime(date_format)
+
+
 def is_current_date(date: str, date_format: str = '%Y-%m-%d') -> bool:
     if not date:
         return False
