@@ -12,8 +12,13 @@ variable "SECRET_KEY" {
   type        = string
   sensitive   = true
 }
-variable "DOCKER_IMAGE" {
-  description = "Docker image name for the lambda that is stored in ECR"
+variable "PARTY_BOT_IMAGE" {
+  description = "Party bot docker image for the lambda that is stored in ECR"
+  type        = string
+  sensitive   = true
+}
+variable "HOLIDAY_BOT_IMAGE" {
+  description = "Holiday bot docker image for the lambda that is stored in ECR"
   type        = string
   sensitive   = true
 }
