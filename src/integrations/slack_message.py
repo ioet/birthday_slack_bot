@@ -26,3 +26,7 @@ class SlackMessageIntegration:
             ]
         })
         return response
+
+    @classmethod
+    def send_raw_message(cls, raw_message: dict):
+        return cls.client.post(cls.webhook_url, payload=raw_message)

@@ -2,7 +2,7 @@ module "holiday_lambda_container_image" {
   source = "terraform-aws-modules/lambda/aws"
 
   function_name = "ioet-holiday-bot"
-  description   = "Informs the holidays of the ioeter each friday at 5:00 PM GTM-5"
+  description   = "Informs the holidays of the ioeter each friday at 10:00 AM GTM-5"
   maximum_retry_attempts = 0
 
   create_package = false
@@ -22,9 +22,9 @@ module "holiday_lambda_container_image" {
 
 
 resource "aws_cloudwatch_event_rule" "holiday_schedule_rule" {
-  name                = "every-day"
-  description         = "Trigger event on friday at 5:00PM GMT-5"
-  schedule_expression = "cron(0 22 ? * FRI *)"
+  name                = "every-friday-holiday-bot"
+  description         = "Trigger event on friday at 10:00AM GMT-5"
+  schedule_expression = "cron(0 15 ? * FRI *)"
 }
 
 
