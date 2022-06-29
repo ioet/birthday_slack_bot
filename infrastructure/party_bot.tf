@@ -22,7 +22,7 @@ module "party_lambda_container_image" {
 
 
 resource "aws_cloudwatch_event_rule" "party_schedule_rule" {
-  name                = "every-day"
+  name                = "every-day-party-bot"
   description         = "Trigger event every day at 9:00AM GMT-5"
   schedule_expression = "cron(0 14 * * ? *)"
 }
