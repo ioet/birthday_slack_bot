@@ -41,7 +41,7 @@ class HolidayMessageController(BaseController):
     @classmethod
     def send(cls, hr_integration, slack_message_integration, gif_integration) -> None:
         start = get_date_plus_interval(days=3, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
-        end = get_date_plus_interval(days=10, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
+        end = get_date_plus_interval(days=9, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
         holidays = hr_integration.get_holidays(start, end)
         if holidays:
             best_matching_keyword = cls.get_best_matching_template_keyword(' '.join(cls.gif_keywords))
