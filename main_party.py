@@ -1,8 +1,10 @@
+import asyncio
 import http
 import logging
 
 from src.controllers.anniversary_message import AnniversaryMessageController
 from src.controllers.birthday_message import BirthdayMessageController
+from src.controllers.employee_controller import EmployeeController
 from src.data.wishes import ANNIVERSARY_WISH_TEMPLATES, BIRTHDAY_WISH_TEMPLATES
 from src.integrations.bamboo import BambooIntegration
 from src.integrations.slack_api import SlackApiIntegration
@@ -13,19 +15,21 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def handler(event, context):
+async def main(event, context):
     try:
 
-        BirthdayMessageController.send(
-            BambooIntegration,
+        EmployeeManager = EmployeeController(BambooIntegration)
+
+        await BirthdayMessageController.send(
+            EmployeeManager,
             SlackApiIntegration,
             SlackMessageIntegration,
             TenorGifIntegration,
             BIRTHDAY_WISH_TEMPLATES
         )
 
-        AnniversaryMessageController.send(
-            BambooIntegration,
+        await AnniversaryMessageController.send(
+            EmployeeManager,
             SlackApiIntegration,
             SlackMessageIntegration,
             TenorGifIntegration,
@@ -39,3 +43,8 @@ def handler(event, context):
 
     except Exception as error:
         logger.error(error)
+        raise error
+
+
+def handler(event, context):
+    asyncio.run(main(event, context))
