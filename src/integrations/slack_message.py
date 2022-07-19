@@ -7,8 +7,8 @@ class SlackMessageIntegration:
     client = RestClient('https://hooks.slack.com/services/')
 
     @classmethod
-    def send_message(cls, text_message: str, image_url: str, image_alt_text: str = ''):
-        response = cls.client.post(cls.webhook_url, payload={
+    async def send_message(cls, text_message: str, image_url: str, image_alt_text: str = ''):
+        response = await cls.client.post(cls.webhook_url, payload={
             'text': text_message,
             'blocks': [
                 {
@@ -28,5 +28,5 @@ class SlackMessageIntegration:
         return response
 
     @classmethod
-    def send_raw_message(cls, raw_message: dict):
-        return cls.client.post(cls.webhook_url, payload=raw_message)
+    async def send_raw_message(cls, raw_message: dict):
+        return await cls.client.post(cls.webhook_url, payload=raw_message)

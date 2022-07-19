@@ -1,3 +1,4 @@
+import asyncio
 from typing import List
 
 from src.clients import RestClient
@@ -14,7 +15,7 @@ class SlackApiIntegration:
     )
 
     @classmethod
-    def get_members(cls):
+    async def get_members(cls):
         members = []
         exists_members = True
         query_params = {
@@ -22,7 +23,7 @@ class SlackApiIntegration:
         }
 
         while exists_members:
-            response = cls.client.get('users.list', query_params=query_params)
+            response = await cls.client.get('users.list', query_params=query_params)
             members_list = response.json()
 
             cls.raise_exception_for_error(members_list, cls.get_members.__name__)
@@ -35,12 +36,12 @@ class SlackApiIntegration:
         return members
 
     @classmethod
-    def get_member_by_email(cls, email):
+    async def get_member_by_email(cls, email):
         query_params = {
             'email': email
         }
 
-        response = cls.client.get('users.lookupByEmail', query_params=query_params)
+        response = await cls.client.get('users.lookupByEmail', query_params=query_params)
         member = response.json()
 
         cls.raise_exception_for_error(member, cls.get_member_by_email.__name__)
@@ -48,8 +49,9 @@ class SlackApiIntegration:
         return member.get('user')
 
     @classmethod
-    def get_members_id_by_email(cls, members_email: List[str]) -> List[str]:
-        return [cls.get_member_by_email(email).get('id') for email in members_email]
+    async def get_members_id_by_email(cls, members_email: List[str]) -> List[str]:
+        members = await asyncio.gather(*[cls.get_member_by_email(email) for email in members_email])
+        return map(lambda member: member.get('id'), members)
 
     @classmethod
     def get_member_id_by_email(cls, member_email: str) -> str:
