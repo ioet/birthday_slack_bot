@@ -20,8 +20,8 @@ class BambooIntegration:
     )
 
     @classmethod
-    def get_employees(cls):
-        response = cls.client.post('reports/custom', payload={
+    async def get_employees(cls):
+        response = await cls.client.post('reports/custom', payload={
             'title':  'Report',
             'fields': cls.default_employee_fields
         },
@@ -35,29 +35,25 @@ class BambooIntegration:
         return employees
 
     @classmethod
-    def get_employees_with_birthday(cls):
-        employees = cls.get_employees()
-        employees = [employee for employee in employees if employee[cls.employee_birthday_field]]
-        return employees
+    def get_employees_with_birthday(cls, employees: List[dict]):
+        return (employee for employee in employees if employee[cls.employee_birthday_field])
 
     @classmethod
-    def get_employees_with_anniversary(cls):
-        employees = cls.get_employees()
-        employees = [employee for employee in employees if employee[cls.employee_hire_field]]
-        return employees
+    def get_employees_with_anniversary(cls, employees: List[dict]):
+        return (employee for employee in employees if employee[cls.employee_hire_field])
 
     @classmethod
     def get_employees_email(cls, employees: List[dict]):
-        return [employee.get(cls.employee_email_field) for employee in employees]
+        return (employee.get(cls.employee_email_field) for employee in employees)
 
     @classmethod
-    def get_holidays(cls, start: Optional[str] = None, end: Optional[str] = None) -> List[dict]:
+    async def get_holidays(cls, start: Optional[str] = None, end: Optional[str] = None) -> List[dict]:
         params = {}
         if start:
             params.update({'start': start})
         if end:
             params.update({'end': end})
 
-        response = cls.client.get('time_off/whos_out/', query_params=params, custom_headers={'Accept': 'application/json'})
+        response = await cls.client.get('time_off/whos_out/', query_params=params, custom_headers={'Accept': 'application/json'})
 
         return [time_off for time_off in response.json() if time_off.get('type', '').lower() == 'holiday']

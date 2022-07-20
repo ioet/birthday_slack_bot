@@ -39,12 +39,12 @@ class HolidayMessageController(BaseController):
         }
 
     @classmethod
-    def send(cls, hr_integration, slack_message_integration, gif_integration) -> None:
+    async def send(cls, hr_integration, slack_message_integration, gif_integration) -> None:
         start = get_date_plus_interval(days=3, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
         end = get_date_plus_interval(days=9, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
-        holidays = hr_integration.get_holidays(start, end)
+        holidays = await hr_integration.get_holidays(start, end)
         if holidays:
             best_matching_keyword = cls.get_best_matching_template_keyword(' '.join(cls.gif_keywords))
-            selected_gif = gif_integration.get_random_gif(best_matching_keyword, cls.gif_search_limit)
+            selected_gif = await gif_integration.get_random_gif(best_matching_keyword, cls.gif_search_limit)
             holiday_message = cls.render_holiday_message(holidays, selected_gif.get('url'), selected_gif.get('description'))
-            slack_message_integration.send_raw_message(holiday_message)
+            await slack_message_integration.send_raw_message(holiday_message)

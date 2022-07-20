@@ -10,8 +10,8 @@ class TenorGifIntegration:
     failback_gif: str = ''
 
     @classmethod
-    def get_random_gif(cls, search_criteria: str, limit: int = 2) -> dict:
-        response = cls.client.get('search', query_params={'q': search_criteria, 'key': cls.api_key, 'limit': limit})
+    async def get_random_gif(cls, search_criteria: str, limit: int = 2) -> dict:
+        response = await cls.client.get('search', query_params={'q': search_criteria, 'key': cls.api_key, 'limit': limit})
         options = response.json().get('results', [])
         selected_gif = choice(options)
         selected_gif_media = selected_gif.get('media', [])
