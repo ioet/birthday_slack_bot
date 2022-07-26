@@ -1,3 +1,4 @@
+import asyncio
 import http
 import logging
 
@@ -10,10 +11,10 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def handler(event, context):
+async def main(event, context):
     try:
 
-        HolidayMessageController.send(
+        await HolidayMessageController.send(
             BambooIntegration,
             SlackMessageIntegration,
             TenorGifIntegration
@@ -26,3 +27,8 @@ def handler(event, context):
 
     except Exception as error:
         logger.error(error)
+
+
+def handler(event, context):
+    asyncio.run(main(event, context))
+
