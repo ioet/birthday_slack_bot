@@ -16,6 +16,7 @@ module "party_lambda_container_image" {
     UTC_HOUR_OFFSET           = local.secret.UTC_HOUR_OFFSET
   }
 
+  timeout      = 15
   image_uri    = var.PARTY_BOT_IMAGE
   package_type = "Image"
 }
