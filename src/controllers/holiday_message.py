@@ -11,7 +11,7 @@ class HolidayMessageController(BaseController):
 
     @classmethod
     def render_holiday_message(cls, holidays: List[dict], image_url: str, alt_text: str) -> dict:
-        message = '<!here> Holidays for next week:'
+        message = '<!here> Holidays for the next 2 weeks:'
         holidays_message = [f'• {holiday.get("start")} : {holiday.get("name")}' for holiday in holidays]
         return {
             'text': 'Upcoming holidays:',
@@ -41,7 +41,7 @@ class HolidayMessageController(BaseController):
     @classmethod
     async def send(cls, hr_integration, slack_message_integration, gif_integration) -> None:
         start = get_date_plus_interval(days=3, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
-        end = get_date_plus_interval(days=9, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
+        end = get_date_plus_interval(days=15, utc_hour_offset=EnvManager.UTC_HOUR_OFFSET)
         holidays = await hr_integration.get_holidays(start, end)
         if holidays:
             best_matching_keyword = cls.get_best_matching_template_keyword(' '.join(cls.gif_keywords))
