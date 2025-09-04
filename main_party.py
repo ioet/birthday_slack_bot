@@ -5,7 +5,6 @@ import logging
 from src.controllers.anniversary_message import AnniversaryMessageController
 from src.controllers.birthday_message import BirthdayMessageController
 from src.controllers.employee_controller import EmployeeController
-from src.data.wishes import ANNIVERSARY_WISH_TEMPLATES, BIRTHDAY_WISH_TEMPLATES
 from src.integrations.bamboo import BambooIntegration
 from src.integrations.slack_api import SlackApiIntegration
 from src.integrations.slack_message import SlackMessageIntegration
@@ -25,7 +24,6 @@ async def main(event, context):
             SlackApiIntegration,
             SlackMessageIntegration,
             TenorGifIntegration,
-            BIRTHDAY_WISH_TEMPLATES
         )
 
         await AnniversaryMessageController.send(
@@ -33,7 +31,6 @@ async def main(event, context):
             SlackApiIntegration,
             SlackMessageIntegration,
             TenorGifIntegration,
-            ANNIVERSARY_WISH_TEMPLATES
         )
 
         return {
