@@ -19,7 +19,7 @@ class AnniversaryMessageController(BaseController):
         return (employee for employee in employees if date_utils.is_current_date(employee.get(anniversary_field)))
 
     @classmethod
-    async def send(cls, employee_manager, slack_api_integration, slack_message_integration, gif_integration, templates: Tuple[str]):
+    async def send(cls, employee_manager, slack_api_integration, slack_message_integration, gif_integration):
 
         async def send_message_coro(best_matching_keyword: str, gif_search_limit: int, message: str):
             selected_gif = await gif_integration.get_random_gif(best_matching_keyword, gif_search_limit)

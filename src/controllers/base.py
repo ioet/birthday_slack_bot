@@ -3,6 +3,8 @@ from collections import OrderedDict
 from random import choice, choices
 from itertools import repeat
 
+from src.integrations.gemini import GeminiIntegration
+
 
 class BaseController:
 
@@ -10,8 +12,8 @@ class BaseController:
     gif_search_limit: int = 15
 
     @staticmethod
-    def choose_template(templates: List[str]) -> str:
-        return choice(templates)
+    def choose_template(template_type: str) -> str:
+        return GeminiIntegration(template_type).generate_template(template_type)
 
     @staticmethod
     def fill_from_template(username: str, template: str) -> str:
