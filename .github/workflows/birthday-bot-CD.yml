@@ -26,6 +26,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.TF_VAR_SECRET_KEY }}
           aws-region: ${{secrets.TF_VAR_REGION}}
 
+      - name: Log AWS account identity
+        run: aws sts get-caller-identity
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
