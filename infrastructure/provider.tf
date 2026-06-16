@@ -6,17 +6,16 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "tfstate-bucket-ioet-birthday-bot"
+    bucket = "tfstate-birthday-bot-057547600142"
     key    = "terraform/state/birthday_lambda.tfstate"
     region = "us-east-1"
     encrypt = true
+    dynamodb_table = "terraform-state-lock"
   }
 }
 
 provider "aws" {
-  region     = var.REGION
-  access_key = var.ACCESS_KEY
-  secret_key = var.SECRET_KEY
+  region = var.REGION
 }
 
 

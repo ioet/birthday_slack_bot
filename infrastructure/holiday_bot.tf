@@ -12,7 +12,7 @@ module "holiday_lambda_container_image" {
     BAMBOOHR_SUBDOMAIN        = local.secret.BAMBOOHR_SUBDOMAIN
     SLACK_WEBHOOK_URL_SECRET  = local.secret.SLACK_WEBHOOK_URL_SECRET
     SLACK_BOT_USER_AUTH_TOKEN = local.secret.SLACK_BOT_USER_AUTH_TOKEN
-    TENOR_API_KEY             = local.secret.TENOR_API_KEY
+    GIPHY_API_KEY             = local.secret.GIPHY_API_KEY
     UTC_HOUR_OFFSET           = local.secret.UTC_HOUR_OFFSET
   }
 

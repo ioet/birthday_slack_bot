@@ -9,7 +9,7 @@ from src.data.wishes import ANNIVERSARY_WISH_TEMPLATES, BIRTHDAY_WISH_TEMPLATES
 from src.integrations.bamboo import BambooIntegration
 from src.integrations.slack_api import SlackApiIntegration
 from src.integrations.slack_message import SlackMessageIntegration
-from src.integrations.tenor_gif import TenorGifIntegration
+from src.integrations.giphy_gif import GiphyGifIntegration
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -24,7 +24,7 @@ async def main(event, context):
             EmployeeManager,
             SlackApiIntegration,
             SlackMessageIntegration,
-            TenorGifIntegration,
+            GiphyGifIntegration,
             BIRTHDAY_WISH_TEMPLATES
         )
 
@@ -32,7 +32,7 @@ async def main(event, context):
             EmployeeManager,
             SlackApiIntegration,
             SlackMessageIntegration,
-            TenorGifIntegration,
+            GiphyGifIntegration,
             ANNIVERSARY_WISH_TEMPLATES
         )
 
