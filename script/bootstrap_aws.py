@@ -167,10 +167,7 @@ def build_permissions_policy(
                     'ecr:DescribeImages',
                     'ecr:ListImages',
                 ],
-                'Resource': [
-                    f'arn:aws:ecr:{region}:{account_id}:repository/{ecr_party}',
-                    f'arn:aws:ecr:{region}:{account_id}:repository/{ecr_holiday}',
-                ],
+                'Resource': f'arn:aws:ecr:{region}:{account_id}:repository/*',
             },
             {
                 'Sid': 'TerraformStateS3',
