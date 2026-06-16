@@ -5,6 +5,10 @@ on:
     branches:
       - "main"
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   cd:
     runs-on: ubuntu-latest
@@ -12,18 +16,15 @@ jobs:
       WORKING_DIR: infrastructure/
       TF_VAR_SECRET_NAME: ${{secrets.TF_VAR_SECRET_NAME}}
       TF_VAR_REGION: ${{secrets.TF_VAR_REGION}}
-      TF_VAR_ACCESS_KEY: ${{secrets.TF_VAR_ACCESS_KEY}}
-      TF_VAR_SECRET_KEY: ${{secrets.TF_VAR_SECRET_KEY}}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.TF_VAR_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.TF_VAR_SECRET_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{secrets.TF_VAR_REGION}}
 
       - name: Login to Amazon ECR
