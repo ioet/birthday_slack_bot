@@ -1,15 +1,17 @@
 terraform {
+  required_version = ">= 1.5.7"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.9.0"
+      version = "~> 6.28"
     }
   }
   backend "s3" {
-    bucket = "tfstate-birthday-bot-057547600142"
-    key    = "terraform/state/birthday_lambda.tfstate"
-    region = "us-east-1"
-    encrypt = true
+    bucket         = "tfstate-birthday-bot-057547600142"
+    key            = "terraform/state/birthday_lambda.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
     dynamodb_table = "terraform-state-lock"
   }
 }

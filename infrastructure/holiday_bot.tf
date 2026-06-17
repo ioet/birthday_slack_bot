@@ -1,8 +1,9 @@
 module "holiday_lambda_container_image" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 8.8"
 
-  function_name = "ioet-holiday-bot"
-  description   = "Informs the holidays of the ioeter each friday at 10:00 AM GTM-5"
+  function_name          = "ioet-holiday-bot"
+  description            = "Informs the holidays of the ioeter each friday at 10:00 AM GTM-5"
   maximum_retry_attempts = 0
 
   create_package = false

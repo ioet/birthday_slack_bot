@@ -1,8 +1,9 @@
 module "party_lambda_container_image" {
-  source = "terraform-aws-modules/lambda/aws"
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 8.8"
 
-  function_name = "ioet-birthday-bot"
-  description   = "Birthday-bot sends wishes each day at 9:00 AM"
+  function_name          = "ioet-birthday-bot"
+  description            = "Birthday-bot sends wishes each day at 9:00 AM"
   maximum_retry_attempts = 0
 
   create_package = false
