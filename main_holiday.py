@@ -4,8 +4,9 @@ import logging
 
 from src.controllers.holiday_message import HolidayMessageController
 from src.integrations.bamboo import BambooIntegration
-from src.integrations.slack_message import SlackMessageIntegration
+from src.integrations.bedrock import BedrockIntegration
 from src.integrations.giphy_gif import GiphyGifIntegration
+from src.integrations.slack_message import SlackMessageIntegration
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -17,7 +18,8 @@ async def main(event, context):
         await HolidayMessageController.send(
             BambooIntegration,
             SlackMessageIntegration,
-            GiphyGifIntegration
+            GiphyGifIntegration,
+            BedrockIntegration,
         )
 
         return {

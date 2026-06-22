@@ -15,11 +15,29 @@ module "holiday_lambda_container_image" {
     SLACK_BOT_USER_AUTH_TOKEN = local.secret.SLACK_BOT_USER_AUTH_TOKEN
     GIPHY_API_KEY             = local.secret.GIPHY_API_KEY
     UTC_HOUR_OFFSET           = local.secret.UTC_HOUR_OFFSET
+    AWS_BEDROCK_API_KEY       = local.secret.AWS_BEDROCK_API_KEY
+    AWS_BEDROCK_REGION        = try(local.secret.AWS_BEDROCK_REGION, var.AWS_BEDROCK_REGION)
+    AWS_BEDROCK_MODEL_ID      = try(local.secret.AWS_BEDROCK_MODEL_ID, var.AWS_BEDROCK_MODEL_ID)
   }
 
-  timeout      = 15
+  timeout      = 900
   image_uri    = var.HOLIDAY_BOT_IMAGE
   package_type = "Image"
+
+  attach_policy_statements = true
+  policy_statements = {
+    bedrock_invoke = {
+      effect = "Allow"
+      actions = [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream",
+      ]
+      resources = [
+        "arn:aws:bedrock:${var.REGION}::foundation-model/*",
+        "arn:aws:bedrock:${var.REGION}:*:inference-profile/*",
+      ]
+    }
+  }
 }
 
 

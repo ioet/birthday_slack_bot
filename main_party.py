@@ -10,6 +10,7 @@ from src.integrations.bamboo import BambooIntegration
 from src.integrations.slack_api import SlackApiIntegration
 from src.integrations.slack_message import SlackMessageIntegration
 from src.integrations.giphy_gif import GiphyGifIntegration
+from src.integrations.bedrock import BedrockIntegration
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -25,7 +26,8 @@ async def main(event, context):
             SlackApiIntegration,
             SlackMessageIntegration,
             GiphyGifIntegration,
-            BIRTHDAY_WISH_TEMPLATES
+            BIRTHDAY_WISH_TEMPLATES,
+            BedrockIntegration
         )
 
         await AnniversaryMessageController.send(
@@ -33,7 +35,8 @@ async def main(event, context):
             SlackApiIntegration,
             SlackMessageIntegration,
             GiphyGifIntegration,
-            ANNIVERSARY_WISH_TEMPLATES
+            ANNIVERSARY_WISH_TEMPLATES,
+            # BedrockIntegration
         )
 
         return {

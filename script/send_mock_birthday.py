@@ -35,6 +35,7 @@ from src.controllers.birthday_message import BirthdayMessageController
 from src.controllers.employee_controller import EmployeeController
 from src.data.wishes import BIRTHDAY_WISH_TEMPLATES
 from src.integrations.bamboo import BambooIntegration
+from src.integrations.bedrock import BedrockIntegration
 from src.integrations.giphy_gif import GiphyGifIntegration
 from src.integrations.slack_api import SlackApiIntegration
 from src.integrations.slack_message import SlackMessageIntegration
@@ -104,6 +105,7 @@ async def run() -> None:
         SlackMessageIntegration,
         GiphyGifIntegration,
         BIRTHDAY_WISH_TEMPLATES,
+        BedrockIntegration,
     )
 
     logger.info('Done: birthday message sent to Slack.')
