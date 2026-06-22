@@ -199,6 +199,7 @@ def build_permissions_policy(
                 'Action': [
                     'secretsmanager:GetSecretValue',
                     'secretsmanager:DescribeSecret',
+                    'secretsmanager:GetResourcePolicy',
                 ],
                 'Resource': f'arn:aws:secretsmanager:{region}:{account_id}:secret:{secret_name}*',
             },
@@ -240,6 +241,7 @@ def build_permissions_policy(
                     'events:ListTargetsByRule',
                     'events:TagResource',
                     'events:UntagResource',
+                    'events:ListTagsForResource',
                 ],
                 'Resource': [
                     f'arn:aws:events:{region}:{account_id}:rule/{party_rule}',
