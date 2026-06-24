@@ -68,7 +68,13 @@ REQUIRED_SECRET_KEYS = (
     'SLACK_BOT_USER_AUTH_TOKEN',
     'GIPHY_API_KEY',
     'UTC_HOUR_OFFSET',
+    'AWS_BEDROCK_API_KEY',
 )
+
+SECRET_KEYS_WITH_DEFAULTS = {
+    'AWS_BEDROCK_REGION': 'us-east-1',
+    'AWS_BEDROCK_MODEL_ID': 'google.gemma-3-4b-it',
+}
 
 
 def parse_env_file(path: Path) -> dict[str, str]:
@@ -87,20 +93,24 @@ def parse_env_file(path: Path) -> dict[str, str]:
 
 def load_secret_payload(secret_file: Path | None, secret_json: str | None) -> dict[str, str]:
     if secret_json:
-        payload = json.loads(secret_json)
-        if not isinstance(payload, dict):
+        values = json.loads(secret_json)
+        if not isinstance(values, dict):
             raise ValueError('--secret-json must be a JSON object')
-        return {key: str(payload[key]) for key in REQUIRED_SECRET_KEYS}
-
-    if secret_file is None:
+        values = {key: str(value) for key, value in values.items()}
+    elif secret_file is not None:
+        values = parse_env_file(secret_file)
+    else:
         raise ValueError('Provide --secret-file or --secret-json for Secrets Manager')
 
-    env_values = parse_env_file(secret_file)
-    missing = [key for key in REQUIRED_SECRET_KEYS if not env_values.get(key)]
+    missing = [key for key in REQUIRED_SECRET_KEYS if not values.get(key)]
     if missing:
-        raise ValueError(f'Missing required secret keys in {secret_file}: {", ".join(missing)}')
+        source = '--secret-json' if secret_json else str(secret_file)
+        raise ValueError(f'Missing required secret keys in {source}: {", ".join(missing)}')
 
-    return {key: env_values[key] for key in REQUIRED_SECRET_KEYS}
+    payload = {key: values[key] for key in REQUIRED_SECRET_KEYS}
+    for key, default in SECRET_KEYS_WITH_DEFAULTS.items():
+        payload[key] = values.get(key) or default
+    return payload
 
 
 def build_trust_policy(account_id: str, github_repo: str, github_branch: str) -> dict[str, Any]:
