@@ -7,7 +7,12 @@ from src.utils.date_utils import get_date_plus_interval
 
 class HolidayMessageController(BaseController):
 
+<<<<<<< Updated upstream
     gif_keywords: frozenset = frozenset(('holiday', 'vacation'))
+=======
+    gif_keywords: frozenset = frozenset(('holiday', 'vacation', 'beach', 'relax'))
+    default_gif_keyword: str = 'holiday'
+>>>>>>> Stashed changes
 
     @classmethod
     def render_holiday_message(cls, holidays: List[dict], image_url: str, alt_text: str) -> dict:
