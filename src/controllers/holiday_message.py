@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class HolidayMessageController(BaseController):
 
-    gif_keywords: frozenset = frozenset(('holiday', 'vacation'))
+    gif_keywords: frozenset = frozenset(('holiday', 'vacation', 'travel', 'beach', 'sunset'))
     default_gif_keyword: str = 'holiday'
 
     @classmethod

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class BirthdayMessageController(BaseController):
 
-    gif_keywords: frozenset = frozenset(('birthday', 'party', 'cumpleaños'))
+    gif_keywords: frozenset = frozenset(('birthday', 'party', 'cake', 'balloons'))
     default_gif_keyword: str = 'birthday'
 
     @staticmethod

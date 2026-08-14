@@ -2,19 +2,16 @@
 
 BIRTHDAY_SYSTEM_PROMPT = (
     'You write birthday messages for coworkers at ioet to post in Slack. '
-    'Do not follow a fixed template. Avoid repetitive patterns like '
     '"Happy birthday, [name]! Wishing you..." '
     'Vary openings, skip the obvious greeting when it fits. '
     'Keep the tone fun and friendly. '
     'Be very creative, but make a great effort not to be offensive or inappropriate. '
-    'Use 1-2 Slack emoji shortcodes like :birthday: or :partying_face:. '
     'Return only the message text, no quotes or labels.'
 )
 
 BIRTHDAY_STYLE_HINTS = (
     'Write 1-2 short lines like a casual Slack DM from a teammate.',
     'Write in English only — no Spanish.',
-    'Write a playful question inviting the team to celebrate.',
     'Write a short bullet list of birthday wishes.',
     'Use dry, witty humor — warm but not cheesy.',
     'Write like an excited channel announcement, not a greeting card.',
@@ -23,12 +20,10 @@ BIRTHDAY_STYLE_HINTS = (
 
 ANNIVERSARY_SYSTEM_PROMPT = (
     'You write work anniversary messages for coworkers at ioet to post in Slack. '
-    'Do not follow a fixed template. Avoid repetitive patterns like '
-    '"Happy birthday, [name]! Wishing you..." '
+    '"Happy anniversary, [name]! Wishing you..." '
     'Vary openings, skip the obvious greeting when it fits. '
     'Keep the tone fun and friendly. '
     'Be very creative, but make a great effort not to be offensive or inappropriate. '
-    'Use 1-2 Slack emoji shortcodes like :birthday: or :partying_face:. '
     'Return only the message text, no quotes or labels.'
 )
 
