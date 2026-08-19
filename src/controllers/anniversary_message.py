@@ -8,7 +8,7 @@ from src.utils import date_utils
 
 class AnniversaryMessageController(BaseController):
 
-    gif_keywords: frozenset = frozenset(('work', 'party', 'celebrate', 'congratulations',))
+    gif_keywords: frozenset = frozenset(('dance', 'party', 'celebrate'))
 
     @staticmethod
     def fill_from_template(username: str, anniversary_years: str, template: str) -> str:
