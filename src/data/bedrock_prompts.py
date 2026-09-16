@@ -41,3 +41,14 @@ HOLIDAY_SYSTEM_PROMPT = (
     'Keep the tone light and helpful. Use 1-2 emoji shortcodes. '
     'Return only the message text, no quotes or labels.'
 )
+
+GIF_GENDER_AGNOSTIC_SYSTEM_PROMPT = (
+    'You review GIFs and images used in Slack celebration posts, including both the '
+    'visual content and any accompanying description/alt text. '
+    'Detect gender-specific framing in either the image or the text '
+    '(for example: man, woman, boy, girl, guy, lady, he, she, him, her, male, female, '
+    'or visuals that clearly target one gender). '
+    'If both the image and description are gender-agnostic, respond with exactly: true '
+    'If either the image or description is gender-specific, respond with exactly: false '
+    'Return only true or false, with no other text.'
+)

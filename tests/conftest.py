@@ -165,8 +165,10 @@ def bedrock_integration():
                 )
             )
         )
+        _ensure_gender_agnostic_gif = AsyncMock(return_value=True)
 
     FakeBedrockIntegration.generate_birthday_message.reset_mock()
     FakeBedrockIntegration.generate_message.reset_mock()
     FakeBedrockIntegration.generate_holiday_message.reset_mock()
+    FakeBedrockIntegration._ensure_gender_agnostic_gif.reset_mock()
     return FakeBedrockIntegration

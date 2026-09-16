@@ -56,7 +56,12 @@ class BirthdayMessageController(BaseController):
     ):
 
         async def send_message_coro(gif_search_limit: int, message: str):
-            selected_gif = await gif_integration.get_random_gif(cls.default_gif_keyword, gif_search_limit)
+            selected_gif = await cls.get_gender_agnostic_gif(
+                gif_integration,
+                message_generator,
+                cls.default_gif_keyword,
+                gif_search_limit,
+            )
             await slack_message_integration.send_message(message, selected_gif.get('url'), selected_gif.get('description'))
 
         birthday_employees = list(cls.get_birthday_employees(
