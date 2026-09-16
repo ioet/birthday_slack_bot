@@ -36,7 +36,7 @@ async def main(event, context):
             SlackMessageIntegration,
             GiphyGifIntegration,
             ANNIVERSARY_WISH_TEMPLATES,
-            # BedrockIntegration
+            BedrockIntegration
         )
 
         return {
