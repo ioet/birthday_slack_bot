@@ -65,11 +65,11 @@ class BaseController:
             try:
                 is_gender_agnostic = await message_generator._ensure_gender_agnostic_gif(
                     selected_gif.get('description', ''),
-                    gif_url,
+                    selected_gif.get('preview_url') or gif_url,
                 )
             except Exception as error:
-                logger.warning('Gender-agnostic GIF check failed, using selected GIF: %s', error)
-                return selected_gif
+                logger.warning('Gender-agnostic GIF check failed, trying another GIF: %s', error)
+                continue
 
             if is_gender_agnostic:
                 return selected_gif

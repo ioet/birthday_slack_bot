@@ -139,6 +139,7 @@ def gif_integration():
         get_random_gif = AsyncMock(
             return_value={
                 'url': 'https://example.com/gif.gif',
+                'preview_url': 'https://example.com/gif-small.gif',
                 'description': 'party gif',
             }
         )

@@ -169,13 +169,16 @@ class BedrockIntegration:
             image_bytes=image_bytes,
             image_format=image_format,
         )
-        normalized = result.strip().lower()
-        if normalized.startswith('true'):
-            return True
-        if normalized.startswith('false'):
-            return False
-        logger.warning('Unexpected gender-agnostic check response: %s', result)
-        return False
+        normalized = result.strip().lower().rstrip('.!')
+
+        if normalized not in ('true', 'false'):
+            logger.warning(
+                'Unexpected gender-agnostic check response: %r',
+                result,
+            )
+            raise ValueError('Expected a boolean response from the LLM')
+
+        return normalized == 'true'
 
     @classmethod
     async def generate_birthday_message(cls, employee_name: str, slack_mention: str) -> str:
